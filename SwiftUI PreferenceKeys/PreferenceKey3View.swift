@@ -18,8 +18,12 @@ struct PreferenceKey3View: View {
         VStack {
             List(scores, id:\.self) { score in
                 Text("Score \(score)")
+                    .updateInt(score)
             }
             Text("Total: \(total)")
+        }
+        .onPreferenceChange(UpdateInt.self) { newValue in
+            total = newValue
         }
     }
 }
