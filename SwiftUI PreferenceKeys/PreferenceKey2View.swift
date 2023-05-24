@@ -18,13 +18,19 @@ struct PreferenceKey2View: View {
                VStack {
                    Text("\(result)")
                        .font(.largeTitle).bold()
+                       .updateInt(7)
                    HStack{
                        Rectangle()
                        Rectangle()
                    }
+                   .updateInt(5)
                    Rectangle()
+                       .updateInt(2)
                }
                .navigationTitle("Example 2")
+           }
+           .onPreferenceChange(UpdateInt.self) { newValue in
+               result = newValue
            }
        }
 }
@@ -32,5 +38,19 @@ struct PreferenceKey2View: View {
 struct PreferenceKey2View_Previews: PreviewProvider {
     static var previews: some View {
         PreferenceKey2View()
+    }
+}
+
+struct UpdateInt: PreferenceKey {
+    static var defaultValue: Int = 0
+    
+    static func reduce(value: inout Int, nextValue: () -> Int) {
+        value = value + nextValue()
+    }
+}
+
+extension View {
+    func updateInt(_ value: Int) -> some View {
+        self.preference(key: UpdateInt.self, value: value)
     }
 }
